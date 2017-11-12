@@ -1,0 +1,115 @@
+"deathmatch"
+{
+	"base"		"base"
+	"title"		"Deathmatch"
+	"maps"		"^dm_|^deathmatch_"
+	"menusystem"	"1"
+	"version"   "1"
+
+	"settings"
+	{
+		1
+		{
+			"name"		"dm_timelimit"
+			"text"		"Time limit for map"
+			"type"		"Numeric"
+			"default"	"15"
+		}
+		
+		2
+		{
+			"name"		"dm_startpoints"
+			"text"		"Start points in pointshop"
+			"type"		"Numeric"
+			"default"	"3000"
+		}
+		
+		3
+		{
+			"name"		"dm_killreward"
+			"text"		"Reward for killing people"
+			"type"		"Numeric"
+			"default"	"150"
+		}
+		
+		4
+		{
+			"name"		"dm_winreward"
+			"text"		"Reward for win"
+			"type"		"Numeric"
+			"default"	"1500"
+		}
+		
+		5
+		{
+			"name"		"dm_minplayers"
+			"text"		"Minimum players for start a game"
+			"type"		"Numeric"
+			"default"	"4"
+		}
+		
+		6
+		{
+			"name"		"dm_votemaptime"
+			"text"		"Time for choose a next map (in seconds)"
+			"type"		"Numeric"
+			"default"	"30"
+		}
+		
+		7
+		{
+			"name"		"dm_maxkills"
+			"text"		"How many kills to early win"
+			"type"		"Numeric"
+			"default"	"150"
+		}
+		
+		8
+		{
+			"name"		"dm_doublejump"
+			"text"		"Allow double jump"
+			"type"		"CheckBox"
+			"default"	"1"
+		}
+		
+		9
+		{
+			"name"		"dm_stamina"
+			"text"		"Limited sprint"
+			"type"		"CheckBox"
+			"default"	"1"
+		}
+		
+		10
+		{
+			"name"		"dm_maxstamina"
+			"text"		"Max stamina"
+			"type"		"Numeric"
+			"default"	"150"
+		}
+		
+		11
+		{
+			"name"		"dm_regenmul"
+			"text"		"Regen multiply"
+			"type"		"Numeric"
+			"default"	"1"
+		}
+		
+		12
+		{
+			"name"		"dm_decaymul"
+			"text"		"Decay multiply"
+			"type"		"Numeric"
+			"default"	"0.5"
+		}
+		
+		13
+		{
+			"name"		"dm_idle_limit"
+			"text"		"IDLE limit (in seconds)"
+			"type"		"Numeric"
+			"default"	"90"
+		}
+	}
+}
