@@ -4,6 +4,7 @@
 	"title"		"Deathmatch"
 	"maps"		"^dm_|^deathmatch_"
 	"menusystem"	"1"
+	"workshopid" "1200056872"
 	"version"   "1"
 
 	"settings"
