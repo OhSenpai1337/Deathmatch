@@ -158,6 +158,13 @@ function SendGameState(state, ply)
 	return ply and net.Send(ply) or net.Broadcast()
 end
 
+function SendMVP(name, kills, ply)
+	net.Start("DM_MVP")
+		net.WriteString(name or "Nope")
+		net.WriteString(tostring(kills) or "0")
+	return ply and net.Send(ply) or net.Broadcast()
+end
+
 -- Game state is encapsulated by set/get so that it can easily be changed to
 -- eg. a networked var if this proves more convenient
 function SetGameState(state)
@@ -230,11 +237,16 @@ local function WinChecker()
 	if GetGameState() == GAME_ACTIVE then
 		local tbl_kills = sql.Query("SELECT * FROM dm_data_kills WHERE kills=(SELECT MAX(kills) FROM dm_data_kills)")
 		if tbl_kills != nil then
-			winner_steamid = tbl_kills[1].steamid or 0
+			winner_steamid = tbl_kills[1].steamid or "BOT"
 			winner_kills = tbl_kills[1].kills or 0
+			winner_player = player.GetBySteamID(winner_steamid):Name()
+			if !IsValid(winner_player) then winner_player = "Nope" end
+		else
+			winner_player = "Nope"
+			winner_kills = 0
 		end
 		if CurTime() > GetGlobalFloat("dm_game_end", 0) then
-			EndGame(WIN_TIMELIMIT, player.GetBySteamID(winner_steamid):Name(), winner_kills)
+			EndGame(WIN_TIMELIMIT, winner_player, winner_kills)
 		elseif not EnoughPlayers() then
 			LANG.Msg("game_cant_continue")
 			SetGlobalFloat("dm_game_end", -1)
@@ -406,6 +418,7 @@ function BeginGame(bool)
 	if !bool then
 		GiveWeapons()
 	end
+	SendMVP("Nope", "0")
 	game.CleanUpMap()
 
 	if CheckForAbort() then return end

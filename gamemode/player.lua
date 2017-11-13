@@ -242,13 +242,6 @@ function GM:CanPlayerSuicide(ply)
    return ply:IsAlive()
 end
 
-function SendMVP(name, kills, ply)
-	net.Start("DM_MVP")
-		net.WriteString(name or "Nope")
-		net.WriteString(tostring(kills) or "0")
-	return ply and net.Send(ply) or net.Broadcast()
-end
-
 function GM:DoPlayerDeath(ply, attacker, dmginfo)
 	ply:CreateRagdoll()
 	if GetGameState() == GAME_ACTIVE then
