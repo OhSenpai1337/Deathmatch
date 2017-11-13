@@ -3,6 +3,10 @@ This is classic FFA (also called DM or Player vs All) gamemode for Garry's Mod 1
 
 Requires Counter Strike: Source, you must own it and have it installed. If you don't have the maps, textures or some models you most likely are missing CSS.
 
+# Usefull links
+
+Configuration: [here](https://github.com/YourSenpaiElite/Deathmatch/wiki/Configuration)
+
 # What i'm used for create this gamemode
 Based on: [Trouble in Terrorist town](https://github.com/Facepunch/garrysmod/tree/master/garrysmod/gamemodes/terrortown)
 
