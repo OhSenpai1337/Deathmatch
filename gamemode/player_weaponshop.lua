@@ -1,15 +1,5 @@
 local Player = FindMetaTable('Player')
 
-local wep_tbl = {
-	[WEAPON_MELEE]  = "weapon_melee",
-	[WEAPON_PISTOL] = "weapon_pistol",
-	[WEAPON_SHOTGUN]  = "weapon_shotgun",
-	[WEAPON_SMG]   = "weapon_smg",
-	[WEAPON_ARIFLE]  = "weapon_arifle",
-	[WEAPON_RIFLE] = "weapon_rifle",
-	[WEAPON_GRENADE] = "weapon_grenade"
-}
-
 local GetTranslation = LANG.GetTranslation
 local GetPTranslation = LANG.GetParamTranslation
 
@@ -54,7 +44,11 @@ end
 function Player:WS_PlayerInitialSpawn()
 	self.WS_Points = 0
 	self.WS_Items = {}
-
+	local tbl_points = sql.Query([[SELECT * FROM dm_data_points WHERE steamid="]]..self:SteamID()..[["]])
+	if tbl_points == nil then
+		local points = GetConVar("dm_startpoints"):GetInt()
+		sql.Query("REPLACE INTO dm_data_points (steamid,points,items) VALUES ( ".. SQLStr(self:SteamID()) ..", "..points..", "..SQLStr("{}").." )")
+	end
 	-- Send stuff
 	timer.Simple(1, function()
 		if !IsValid(self) then return end
