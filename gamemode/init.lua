@@ -239,8 +239,11 @@ local function WinChecker()
 		if tbl_kills != nil then
 			winner_steamid = tbl_kills[1].steamid or "BOT"
 			winner_kills = tbl_kills[1].kills or 0
-			winner_player = player.GetBySteamID(winner_steamid):Name()
-			if !IsValid(winner_player) then winner_player = "Nope" end
+			if IsValid(player.GetBySteamID(winner_steamid)) then 
+				winner_player = player.GetBySteamID(winner_steamid):Name()
+			else
+				winner_player = "Nope"
+			end
 		else
 			winner_player = "Nope"
 			winner_kills = 0
