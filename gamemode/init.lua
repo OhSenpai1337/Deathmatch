@@ -485,14 +485,14 @@ function EndGame(type,name,num)
 
 	-- Votemap Start
 	
+	MapVote.Start(nil, nil, nil, nil)
 	if GetConVar("dm_gameloop"):GetBool() then
 		StopGameTimers()
 		BeginGame(true)
+		MapVote.Cancel()
 	end
-	if !GetConVar("dm_disablemapvote"):GetBool() then
-		if !GetConVar("dm_gameloop"):GetBool() then
-			MapVote.Start(nil, nil, nil, nil)
-		end
+	if GetConVar("dm_disablemapvote"):GetBool() then
+		MapVote.Cancel()
 	end
 
 	-- server plugins might want to start a map vote here or something

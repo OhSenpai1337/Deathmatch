@@ -128,6 +128,7 @@ l.already_rtv         = "You have already voted to Rock the Vote!"
 l.change_rtv          = "There has already been a vote, the map is going to change!"
 l.players_rtv         = "You need more players before you can rock the vote!"
 l.start_rtv           = "The vote has been rocked!"
+l.game_loop           = "Map in game loop"
 
 --Weapon Shop
 l.weapon_shop         = "Weapon shop"

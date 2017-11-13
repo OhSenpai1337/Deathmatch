@@ -70,22 +70,22 @@ function RTV.CanVote( ply )
 	local plyCount = table.Count(player.GetAll())
 	
 	if RTV._ActualWait >= CurTime() then
-		return false, LANG.Msg(ply,"wait_rtv")
+		return false, "wait_rtv"
 	end
 
 	if GetGlobalBool( "In_Voting" ) then
-		return false, LANG.Msg(ply,"progress_rtv")
+		return false, "progress_rtv"
 	end
 
 	if ply.RTVoted then
-		return false, LANG.Msg(ply,"already_rtv")
+		return false, "already_rtv"
 	end
 
 	if RTV.ChangingMaps then
-		return false, LANG.Msg(ply,"change_rtv")
+		return false, "change_rtv"
 	end
 	if plyCount < RTV.PlayerCount then
-        return false, LANG.Msg(ply,"players_rtv")
+        return false, "players_rtv"
     end
 
 	return true
@@ -97,7 +97,7 @@ function RTV.StartVote( ply )
 	local can, err = RTV.CanVote(ply)
 
 	if not can then
-		ply:PrintMessage( HUD_PRINTTALK, err )
+		LANG.Msg(ply, err)
 		return
 	end
 
@@ -110,6 +110,11 @@ concommand.Add( "rtv_start", RTV.StartVote )
 hook.Add( "PlayerSay", "RTV Chat Commands", function( ply, text )
 
 	if table.HasValue( RTV.ChatCommands, string.lower(text) ) then
+		if GetConVar("dm_gameloop"):GetBool() then
+			LANG.Msg(ply, "game_loop")
+			return
+		end
+		if GetConVar("dm_disablemapvote"):GetBool() then return end		
 		RTV.StartVote( ply )
 		return ""
 	end
