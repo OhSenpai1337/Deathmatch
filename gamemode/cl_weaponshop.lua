@@ -5,24 +5,6 @@ local GetPTranslation = LANG.GetParamTranslation
 
 WeaponShop = {}
 
-surface.CreateFont( "TextFont", {
-	font = "DermaLarge",
-	size = 16,
-	weight = 1200,
-	antialias = true,
-	extended = true
-} )
-
-surface.CreateFont( "LargeTitle", {
-	font = "Roboto",
-	size = 32, weight = 500, antialias = true, extended = true
-})
-
-surface.CreateFont( "SmallTitle", {
-	font = "Roboto",
-	size = 20, weight = 500, antialias = true, extended = true
-})
-
 function WeaponShop:Info(weapon_id)
 	local margin = 15
 	local ply = LocalPlayer()

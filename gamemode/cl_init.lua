@@ -12,12 +12,27 @@ surface.CreateFont("Trebuchet22", {font = "Trebuchet MS",
                                    size = 22,
                                    weight = 900})
 
+surface.CreateFont( "TextFont", {
+	font = "DermaLarge",
+	size = 16,
+	weight = 1200,
+	antialias = true,
+	extended = true
+} )
+
+surface.CreateFont( "LargeTitle", {
+	font = "Roboto",
+	size = 32, weight = 500, antialias = true, extended = true
+})
+
+surface.CreateFont( "SmallTitle", {
+	font = "Roboto",
+	size = 20, weight = 500, antialias = true, extended = true
+})
+
 include("player_ext_shd.lua")
 include("weaponry_shd.lua")
 
-include("vgui/ColoredBox.lua")
-include("vgui/SimpleIcon.lua")
-include("vgui/ScrollLabel.lua")
 include("vgui/CustomSheet.lua")
 
 include("cl_hud.lua")
