@@ -17,3 +17,5 @@ XM29 OICW: [XM29 OICW Swep](http://steamcommunity.com/sharedfiles/filedetails/?i
 Stamina: [Burger's Basic Stamina Mod](http://steamcommunity.com/sharedfiles/filedetails/?id=395498330)
 
 Double jump: [Double jump](http://steamcommunity.com/sharedfiles/filedetails/?id=183688016)
+
+MapVote: [Fretta-like Mapvote](https://github.com/tyrantelf/gmod-mapvote)
