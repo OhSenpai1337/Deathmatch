@@ -4,7 +4,7 @@ SWEP.HoldType              = "duel"
 
 if CLIENT then
    SWEP.PrintName          = "Dual Berettas"
-   SWEP.Slot               = 6
+   SWEP.Slot               = 1
    
    SWEP.UseHands = true 
    SWEP.ViewModelFlip      = false

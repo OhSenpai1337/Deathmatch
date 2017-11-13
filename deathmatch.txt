@@ -112,5 +112,13 @@
 			"type"		"Numeric"
 			"default"	"90"
 		}
+		
+		14
+		{
+			"name"		"dm_gameloop"
+			"text"		"Game loop"
+			"type"		"CheckBox"
+			"default"	"0"
+		}
 	}
 }

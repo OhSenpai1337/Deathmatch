@@ -44,7 +44,8 @@ local dm_minply = CreateConVar("dm_minplayers", "4", FCVAR_ARCHIVE + FCVAR_NOTIF
 CreateConVar("dm_maxstamina", "150", FCVAR_REPLICATED + FCVAR_ARCHIVE , "" )
 CreateConVar("dm_regenmul", "1", FCVAR_REPLICATED + FCVAR_ARCHIVE , "" )
 CreateConVar("dm_decaymul", "0.5", FCVAR_REPLICATED + FCVAR_ARCHIVE , "" )
-CreateConVar("dm_playermodel","0", FCVAR_NOTIFY)
+CreateConVar("dm_disablemapvote","0", FCVAR_NOTIFY)
+CreateConVar("dm_gameloop","0", FCVAR_NOTIFY)
 -- Localise stuff we use often. It's like Lua go-faster stripes.
 local math = math
 local table = table
@@ -93,7 +94,7 @@ function GM:Initialize()
 	GAMEMODE.MapWin = WIN_TIMELIMIT
 
 	GAMEMODE.game_state = GAME_WAIT
-   
+	
 	GAMEMODE.playermodel = GetRandomPlayerModel()
 	GAMEMODE.playercolor = COLOR_WHITE
 
@@ -133,22 +134,22 @@ end
 -- Used to do this in Initialize, but server cfg has not always run yet by that
 -- point.
 function GM:InitCvars()
-   MsgN("DM initializing convar settings...")
+	MsgN("DM initializing convar settings...")
 
-   GAMEMODE:SyncGlobals()
+	GAMEMODE:SyncGlobals()
 
-   self.cvar_init = true
+	self.cvar_init = true
 end
 
 function GM:InitPostEntity()
-   WEPS.ForcePrecache()
+	WEPS.ForcePrecache()
 end
 
 -- Convar replication is broken in gmod, so we do this.
 -- I don't like it any more than you do, dear reader.
 function GM:SyncGlobals()
-   SetGlobalInt("dm_time_limit_minutes", GetConVar("dm_timelimit"):GetInt())
-   SetGlobalInt("dm_idle_limit", GetConVar("dm_idle_limit"):GetInt())
+	SetGlobalInt("dm_time_limit_minutes", GetConVar("dm_timelimit"):GetInt())
+	SetGlobalInt("dm_idle_limit", GetConVar("dm_idle_limit"):GetInt())
 end
 
 function SendGameState(state, ply)
@@ -160,35 +161,35 @@ end
 -- Game state is encapsulated by set/get so that it can easily be changed to
 -- eg. a networked var if this proves more convenient
 function SetGameState(state)
-   GAMEMODE.game_state = state
+	GAMEMODE.game_state = state
 
-   SendGameState(state)
+	SendGameState(state)
 end
 
 function GetGameState()
-   return GAMEMODE.game_state
+	return GAMEMODE.game_state
 end
 
 local function EnoughPlayers()
-   local ready = 0
-   -- only count truly available players, ie. no forced specs
-   for _, ply in pairs(player.GetAll()) do
-      if IsValid(ply) and ply:ShouldSpawn() then
-         ready = ready + 1
-      end
-   end
-   return ready >= dm_minply:GetInt()
+	local ready = 0
+	-- only count truly available players, ie. no forced specs
+	for _, ply in pairs(player.GetAll()) do
+		if IsValid(ply) and ply:ShouldSpawn() then
+			ready = ready + 1
+		end
+	end
+	return ready >= dm_minply:GetInt()
 end
 
 -- Used to be in Think/Tick, now in a timer
 function WaitingForPlayersChecker()
-   if GetGameState() == GAME_WAIT then
-      if EnoughPlayers() then
-         timer.Create("begingame", 1, 1, BeginGame)
+	if GetGameState() == GAME_WAIT then
+		if EnoughPlayers() then
+			timer.Create("begingame", 1, 1, BeginGame)
 
-         timer.Stop("waitingforply")
-      end
-   end
+			timer.Stop("waitingforply")
+		end
+	end
 end
 
 -- Start waiting for players
@@ -217,16 +218,16 @@ function FixSpectators()
 end
 
 local function StopGameTimers()
-   -- remove all timers
-   timer.Stop("wait2prep")
-   timer.Stop("begingame")
-   timer.Stop("end2prep")
-   timer.Stop("winchecker")
+	-- remove all timers
+	timer.Stop("wait2prep")
+	timer.Stop("begingame")
+	timer.Stop("end2prep")
+	timer.Stop("winchecker")
 end
 
 -- Used to be in think, now a timer
 local function WinChecker()
-   if GetGameState() == GAME_ACTIVE then
+	if GetGameState() == GAME_ACTIVE then
 		local tbl_kills = sql.Query("SELECT * FROM dm_data_kills WHERE kills=(SELECT MAX(kills) FROM dm_data_kills)")
 		if tbl_kills != nil then
 			winner_steamid = tbl_kills[1].steamid or 0
@@ -248,13 +249,13 @@ local function WinChecker()
 end
 
 function StartWinChecks()
-   if not timer.Start("winchecker") then
-      timer.Create("winchecker", 1, 0, WinChecker)
-   end
+	if not timer.Start("winchecker") then
+		timer.Create("winchecker", 1, 0, WinChecker)
+	end
 end
 
 function StopWinChecks()
-   timer.Stop("winchecker")
+	timer.Stop("winchecker")
 end
 
 function GiveWeapons()
@@ -289,152 +290,159 @@ function GiveWeapons()
 end
 
 function SpawnWillingPlayers(dead_only)
-   local plys = player.GetAll()
-   local wave_delay = 1
+	local plys = player.GetAll()
+	local wave_delay = 1
 
-   -- simple method, should make this a case of the other method once that has
-   -- been tested.
-   if wave_delay <= 0 or dead_only then
-      for k, ply in pairs(player.GetAll()) do
-         if IsValid(ply) then
-            ply:SpawnForGame(dead_only)
-         end
-      end
-   else
-      -- wave method
-      local num_spawns = #GetSpawnEnts()
+	-- simple method, should make this a case of the other method once that has
+	-- been tested.
+	if wave_delay <= 0 or dead_only then
+		for k, ply in pairs(player.GetAll()) do
+			if IsValid(ply) then
+				ply:SpawnForGame(dead_only)
+			end
+		end
+	else
+		-- wave method
+		local num_spawns = #GetSpawnEnts()
 
-      local to_spawn = {}
-      for _, ply in RandomPairs(plys) do
-         if IsValid(ply) and ply:ShouldSpawn() then
-            table.insert(to_spawn, ply)
-            GAMEMODE:PlayerSpawnAsSpectator(ply)
-         end
-      end
+		local to_spawn = {}
+		for _, ply in RandomPairs(plys) do
+			if IsValid(ply) and ply:ShouldSpawn() then
+				table.insert(to_spawn, ply)
+				GAMEMODE:PlayerSpawnAsSpectator(ply)
+			end
+		end
 
-      local sfn = function()
-                     local c = 0
-                     -- fill the available spawnpoints with players that need
-                     -- spawning
-                     while c < num_spawns and #to_spawn > 0 do
-                        for k, ply in pairs(to_spawn) do
-                           if IsValid(ply) and ply:SpawnForGame() then
-                              -- a spawn ent is now occupied
-                              c = c + 1
-                           end
-                           -- Few possible cases:
-                           -- 1) player has now been spawned
-                           -- 2) player should remain spectator after all
-                           -- 3) player has disconnected
-                           -- In all cases we don't need to spawn them again.
-                           table.remove(to_spawn, k)
+		local sfn = function()
+							local c = 0
+							-- fill the available spawnpoints with players that need
+							-- spawning
+							while c < num_spawns and #to_spawn > 0 do
+								for k, ply in pairs(to_spawn) do
+									if IsValid(ply) and ply:SpawnForGame() then
+										-- a spawn ent is now occupied
+										c = c + 1
+									end
+									-- Few possible cases:
+									-- 1) player has now been spawned
+									-- 2) player should remain spectator after all
+									-- 3) player has disconnected
+									-- In all cases we don't need to spawn them again.
+									table.remove(to_spawn, k)
 
-                           -- all spawn ents are occupied, so the rest will have
-                           -- to wait for next wave
-                           if c >= num_spawns then
-                              break
-                           end
-                        end
-                     end
+									-- all spawn ents are occupied, so the rest will have
+									-- to wait for next wave
+									if c >= num_spawns then
+										break
+									end
+								end
+							end
 
-                     MsgN("Spawned " .. c .. " players in spawn wave.")
+							MsgN("Spawned " .. c .. " players in spawn wave.")
 
-                     if #to_spawn == 0 then
-                        timer.Remove("spawnwave")
-                        MsgN("Spawn waves ending, all players spawned.")
-                     end
-                  end
+							if #to_spawn == 0 then
+								timer.Remove("spawnwave")
+								MsgN("Spawn waves ending, all players spawned.")
+							end
+						end
 
-      MsgN("Spawn waves starting.")
-      timer.Create("spawnwave", wave_delay, 0, sfn)
+		MsgN("Spawn waves starting.")
+		timer.Create("spawnwave", wave_delay, 0, sfn)
 
-      -- already run one wave, which may stop the timer if everyone is spawned
-      -- in one go
-      sfn()
-   end
+		-- already run one wave, which may stop the timer if everyone is spawned
+		-- in one go
+		sfn()
+	end
 end
 
 local function SpawnEntities()
-   -- Finally, get players in there
-   SpawnWillingPlayers()
+	-- Finally, get players in there
+	SpawnWillingPlayers()
 end
 
 -- Make sure we have the players to do a round, people can leave during our
 -- preparations so we'll call this numerous times
 local function CheckForAbort()
-   if not EnoughPlayers() then
-      LANG.Msg("start_minplayers")
-      StopGameTimers()
+	if not EnoughPlayers() then
+		LANG.Msg("start_minplayers")
+		StopGameTimers()
 
-      WaitForPlayers()
-      return true
-   end
+		WaitForPlayers()
+		return true
+	end
 
-   return false
+	return false
 end
 
 function SetGameEnd(endtime)
-   SetGlobalFloat("dm_game_end", endtime)
+	SetGlobalFloat("dm_game_end", endtime)
 end
 
 function IncGameEnd(incr)
-   SetGameEnd(GetGlobalFloat("dm_game_end", 0) + incr)
+	SetGameEnd(GetGlobalFloat("dm_game_end", 0) + incr)
 end
 
 local function InitGameEndTime()
-   -- Init round values
-   local endtime = CurTime() + (GetConVar("dm_timelimit"):GetInt() * 60)
-
-   SetGameEnd(endtime)
+	-- Init round values
+	local endtime = CurTime() + (GetConVar("dm_timelimit"):GetInt() * 60)
+	
+	SetGameEnd(endtime)
 end
 
-function BeginGame()
-   GAMEMODE:SyncGlobals()
+function BeginGame(bool)
+	local bool = bool or false
+	GAMEMODE:SyncGlobals()
 
-   if CheckForAbort() then return end
+	if CheckForAbort() then return end
 
-   AnnounceVersion()
+	AnnounceVersion()
 
-   InitGameEndTime()
+	InitGameEndTime()
 
-   if CheckForAbort() then return end
+	if CheckForAbort() then return end
 
-   -- Respawn dumb people who died during prep
-   SpawnWillingPlayers(true)
-   GiveWeapons()
-   game.CleanUpMap()
+	-- Respawn dumb people who died during prep
+	SpawnWillingPlayers(true)
+	if !bool then
+		GiveWeapons()
+	end
+	game.CleanUpMap()
 
-   if CheckForAbort() then return end
+	if CheckForAbort() then return end
 
-   -- Select traitors & co. This is where things really start so we can't abort
-   -- anymore.
-   --SelectRoles()
-   --SendFullStateUpdate()
+	-- Select traitors & co. This is where things really start so we can't abort
+	-- anymore.
+	--SelectRoles()
+	--SendFullStateUpdate()
 
-   -- Edge case where a player joins just as the round starts and is picked as
-   -- traitor, but for whatever reason does not get the traitor state msg. So
-   -- re-send after a second just to make sure everyone is getting it.
-   --timer.Simple(1, SendFullStateUpdate)
-   --timer.Simple(10, SendFullStateUpdate)
-   --timer.Simple(2.5, ShowGameStartPopup)
+	-- Edge case where a player joins just as the round starts and is picked as
+	-- traitor, but for whatever reason does not get the traitor state msg. So
+	-- re-send after a second just to make sure everyone is getting it.
+	--timer.Simple(1, SendFullStateUpdate)
+	--timer.Simple(10, SendFullStateUpdate)
+	--timer.Simple(2.5, ShowGameStartPopup)
 
-   -- Start the win condition check timer
-   StartWinChecks()
+	-- Start the win condition check timer
+	StartWinChecks()
 	sql.Query("DELETE FROM dm_data_kills")
-   GAMEMODE.GameStartTime = CurTime()
-		GAMEMODE.playermodel = GAMEMODE.force_plymodel == "" and GetRandomPlayerModel() or GAMEMODE.force_plymodel
-   -- Sound start alarm
-   SetGameState(GAME_ACTIVE)
-   LANG.Msg("game_started")
-   ServerLog("Game proper has begun...\n")
+		for k, v in pairs(player.GetAll()) do
+		v:SetFrags(0)
+		v:SetDeaths(0)
+	end
+	GAMEMODE.GameStartTime = CurTime()
+	GAMEMODE.playermodel = GAMEMODE.force_plymodel == "" and GetRandomPlayerModel() or GAMEMODE.force_plymodel
 
-   --GAMEMODE:UpdatePlayerLoadouts() -- needs to happen when round_active
+	SetGameState(GAME_ACTIVE)
+	LANG.Msg("game_started")
+	ServerLog("Game proper has begun...\n")
 
-   hook.Call("DMBeginGame")
+	--GAMEMODE:UpdatePlayerLoadouts() -- needs to happen when round_active
+
+	hook.Call("DMBeginGame")
 end
 
 function PrintResultMessage(type)
-   ServerLog("Game ended.\n")
+	ServerLog("Game ended.\n")
 end
 
 function EndGame(type,name,num)
@@ -460,7 +468,16 @@ function EndGame(type,name,num)
 	StopWinChecks()
 
 	-- Votemap Start
-	MapVote.Start(nil, nil, nil, nil)
+	
+	if GetConVar("dm_gameloop"):GetBool() then
+		StopGameTimers()
+		BeginGame(true)
+	end
+	if !GetConVar("dm_disablemapvote"):GetBool() then
+		if !GetConVar("dm_gameloop"):GetBool() then
+			MapVote.Start(nil, nil, nil, nil)
+		end
+	end
 
 	-- server plugins might want to start a map vote here or something
 	-- these hooks are not used by DM internally
@@ -468,7 +485,7 @@ function EndGame(type,name,num)
 end
 
 function GM:MapTriggeredEnd(wintype)
-   self.MapWin = wintype
+	self.MapWin = wintype
 end
 
 -- The most basic win check is whether both sides have one dude alive
@@ -489,40 +506,40 @@ function GM:DMCheckForWin()
 end
 
 local function ForceGameRestart(ply, command, args)
-   -- ply is nil on dedicated server console
-   if (not IsValid(ply)) or ply:IsAdmin() or ply:IsSuperAdmin() or cvars.Bool("sv_cheats", 0) then
-      LANG.Msg("game_restart")
+	-- ply is nil on dedicated server console
+	if (not IsValid(ply)) or ply:IsAdmin() or ply:IsSuperAdmin() or cvars.Bool("sv_cheats", 0) then
+		LANG.Msg("game_restart")
 
-      StopGameTimers()
+		StopGameTimers()
 
-      -- do prep
-      PrepareGame()
-   else
-      ply:PrintMessage(HUD_PRINTCONSOLE, "You must be a GMod Admin or SuperAdmin on the server to use this command, or sv_cheats must be enabled.")
-   end
+		-- do prep
+		BeginGame(true)
+	else
+		ply:PrintMessage(HUD_PRINTCONSOLE, "You must be a GMod Admin or SuperAdmin on the server to use this command, or sv_cheats must be enabled.")
+	end
 end
 concommand.Add("dm_gamerestart", ForceGameRestart)
 
 -- Version announce also used in Initialize
 function ShowVersion(ply)
-   local text = Format("This is DM version %s\n", GAMEMODE.Version)
-   if IsValid(ply) then
-      ply:PrintMessage(HUD_PRINTNOTIFY, text)
-   else
-      Msg(text)
-   end
+	local text = Format("This is DM version %s\n", GAMEMODE.Version)
+	if IsValid(ply) then
+		ply:PrintMessage(HUD_PRINTNOTIFY, text)
+	else
+		Msg(text)
+	end
 end
 concommand.Add("dm_version", ShowVersion)
 
 function AnnounceVersion()
-   local text = Format("You are playing %s, version %s.\n", GAMEMODE.Name, GAMEMODE.Version)
+	local text = Format("You are playing %s, version %s.\n", GAMEMODE.Name, GAMEMODE.Version)
 
-   -- announce to players
-   for k, ply in pairs(player.GetAll()) do
-      if IsValid(ply) then
-         ply:PrintMessage(HUD_PRINTTALK, text)
-      end
-   end
+	-- announce to players
+	for k, ply in pairs(player.GetAll()) do
+		if IsValid(ply) then
+			ply:PrintMessage(HUD_PRINTTALK, text)
+		end
+	end
 end
 
 net.Receive("DM_IdleKick", function(len, ply)
