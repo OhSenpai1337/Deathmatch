@@ -4,12 +4,11 @@ MapVote.Config = {}
 --Default Config
 MapVoteConfigDefault = {
     MapLimit = 24,
-    TimeLimit = 28,
     AllowCurrentMap = false,
     EnableCooldown = false,
     MapsBeforeRevote = 2,
     RTVPlayerCount = 3,
-    MapPrefixes = {"dm_","deathmatch","ttt"}
+    MapPrefixes = {"dm_","deathmatch_","ttt_"}
     }
 --Default Config
 

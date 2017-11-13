@@ -57,7 +57,7 @@ end
 
 function MapVote.Start(length, current, limit, prefix)
     current = current or MapVote.Config.AllowCurrentMap or false
-    length = length or MapVote.Config.TimeLimit or 28
+    length = length or GetConVar("dm_votemaptime"):GetInt()
     limit = limit or MapVote.Config.MapLimit or 24
     cooldown = MapVote.Config.EnableCooldown or true
     prefix = prefix or MapVote.Config.MapPrefixes

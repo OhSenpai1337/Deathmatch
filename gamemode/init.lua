@@ -32,7 +32,7 @@ include("player_weaponshop.lua")
 
 --Convars
 CreateConVar("dm_timelimit", "15", FCVAR_NOTIFY)
-CreateConVar("dm_startpoints", "3000", FCVAR_ARCHIVE)
+CreateConVar("dm_startpoints", "1500", FCVAR_ARCHIVE)
 CreateConVar("dm_killreward", "150", FCVAR_NOTIFY)
 CreateConVar("dm_winreward", "1500", FCVAR_NOTIFY)
 CreateConVar("dm_votemaptime", "30", FCVAR_NOTIFY)

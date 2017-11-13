@@ -19,9 +19,9 @@
 		2
 		{
 			"name"		"dm_startpoints"
-			"text"		"Start points in pointshop"
+			"text"		"Start points in weaponshop"
 			"type"		"Numeric"
-			"default"	"3000"
+			"default"	"1500"
 		}
 		
 		3
