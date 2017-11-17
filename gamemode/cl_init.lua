@@ -116,7 +116,7 @@ local function ReceiveGameState()
       GameStateChange(o, GAMEMODE.game_state)
    end
 
-   MsgN("Game state: " .. GAMEMODE.game_state)
+   --MsgN("Game state: " .. GAMEMODE.game_state)
 end
 net.Receive("DM_GameState", ReceiveGameState)
 MVP_Name = "Nope"

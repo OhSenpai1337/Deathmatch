@@ -216,6 +216,7 @@ function Player:WS_BuyItem(weapon_id)
 	self:WS_TakePoints(points)
 	self:WS_NotifyWeapon(weapon_id,points,true)
 	self:WS_GiveItem(weapon_id)
+	self:WS_EquipItem(weapon_id)
 end
 
 function Player:WS_SellItem(weapon_id)
@@ -252,8 +253,7 @@ function Player:WS_EquipItem(weapon_id)
 				equipped_kind = wep.Kind
 			end
 			if kind == equipped_kind then
-				self:WS_LangNotify("onetype")
-				return
+				self:WS_HolsterItem(v.id)
 			end
 		end
 	end

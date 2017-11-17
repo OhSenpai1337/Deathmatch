@@ -5,7 +5,7 @@
 	"maps"		"^dm_|^deathmatch_"
 	"menusystem"	"1"
 	"workshopid" "1200056872"
-	"version"   "1"
+	"version"   "2"
 
 	"settings"
 	{

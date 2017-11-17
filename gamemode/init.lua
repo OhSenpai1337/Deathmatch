@@ -55,8 +55,7 @@ local timer = timer
 local util = util
 
 resource.AddWorkshop( '1199486971' )
-resource.AddFile( "resource/fonts/molot.ttf" )
-resource.AddFile( "resource/fonts/shogunsclan.ttf" )
+resource.AddWorkshop( '1200056872' )
 
 -- Pool some network names.
 util.AddNetworkString("DM_GameState")

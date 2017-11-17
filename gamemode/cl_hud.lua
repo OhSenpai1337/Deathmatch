@@ -21,7 +21,7 @@ local gamestate_string = {
 if SERVER then
 	AddCSLuaFile()
 
-	resource.AddFile("resource/fonts/molot.otf")
+	resource.AddFile("resource/fonts/molot.ttf")
 	resource.AddFile("resource/fonts/shogunsclan.ttf")
 
 	local meta = FindMetaTable("Player")

@@ -275,7 +275,9 @@ function GM:PlayerDeath(victim,weapon,attacker)
 		if tbl_kills != nil then
 			winner_steamid = tbl_kills[1].steamid
 			winner_kills = tbl_kills[1].kills
-			SendMVP(player.GetBySteamID(winner_steamid):Name(), winner_kills)
+			if player.GetBySteamID(winner_steamid):Name() != nil then
+				SendMVP(player.GetBySteamID(winner_steamid):Name(), winner_kills)
+			end
 		else
 			SendMVP("Nope", "0")
 		end
