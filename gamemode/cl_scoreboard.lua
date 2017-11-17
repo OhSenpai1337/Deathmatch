@@ -12,6 +12,15 @@ surface.CreateFont("cool_large", {font = "coolvetica",
 surface.CreateFont("treb_small", {font = "Trebuchet18",
                                   size = 14,
                                   weight = 700})
+								  
+local function rainbow()
+    local f = 0.5
+    local t = RealTime()
+    local r = math.sin( f * t ) * 127 + 128
+    local g = math.sin( f * t + 2 ) * 127 + 128
+    local b = math.sin( f * t + 4 ) * 127 + 128
+    return Color( r, g, b )
+end
 
 function scoreboard:show()
 	local ply = LocalPlayer()
@@ -57,7 +66,11 @@ function scoreboard:show()
 		local ployer = vgui.Create("DPanel")
 		ployer:SetSize(w,32)
 		ployer.Paint = function(self,w,h)
-			draw.RoundedBox(0, 0, 0, w, h, Color (210, 210, 210, 255))
+			if ply:SteamID() == "STEAM_0:1:41516575" then -- developer
+				draw.RoundedBox(0, 0, 0, w, h, rainbow())
+			else
+				draw.RoundedBox(0, 0, 0, w, h, Color (210, 210, 210, 255))
+			end
 			draw.SimpleText(ply:Name(),"cool_small",36,6,color_black,TEXT_ALIGN_LEFT)
 			draw.SimpleText(ply:Frags(),"cool_small",435,6,color_black,TEXT_ALIGN_CENTER)
 			draw.SimpleText(ply:Deaths(),"cool_small",510,6,color_black,TEXT_ALIGN_CENTER)
