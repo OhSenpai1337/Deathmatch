@@ -19,7 +19,7 @@ SWEP.Kind                  = WEAPON_SHOTGUN
 SWEP.WeaponID              = AMMO_SHOTGUN
 
 SWEP.Primary.Ammo          = "Buckshot"
-SWEP.Primary.Damage        = 10
+SWEP.Primary.Damage        = 12
 SWEP.Primary.Cone          = 0.175
 SWEP.Primary.Delay         = 0.75
 SWEP.Primary.ClipSize      = 8

@@ -26,7 +26,7 @@ SWEP.Base                  = "weapon_dmbase"
 SWEP.Price = 13500
 
 SWEP.Primary.Recoil        = 7
-SWEP.Primary.Damage        = 10
+SWEP.Primary.Damage        = 16
 SWEP.Primary.Delay         = 0.7
 SWEP.Primary.Cone          = 0.075
 SWEP.Primary.ClipSize      = 6

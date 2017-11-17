@@ -20,7 +20,7 @@ SWEP.Available = true
 SWEP.Price = 11000
 
 SWEP.Primary.Damage        = 65
-SWEP.Primary.Delay         = 0.55
+SWEP.Primary.Delay         = 0.45
 SWEP.Primary.ClipSize      = -1
 SWEP.Primary.Automatic     = true
 SWEP.Primary.DefaultClip   = -1
@@ -113,7 +113,7 @@ function SWEP:PrimaryAttack()
 		bullet.Dir    = self.Owner:GetAimVector()
 		bullet.Spread = Vector(0, 0, 0)
 		bullet.Tracer = 0
-		bullet.Force  = 18
+		bullet.Force  = 30
 		bullet.Damage = 65
 		
 		

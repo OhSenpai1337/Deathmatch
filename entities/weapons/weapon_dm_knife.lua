@@ -32,7 +32,7 @@ SWEP.Secondary.ClipSize     = -1
 SWEP.Secondary.DefaultClip  = -1
 SWEP.Secondary.Automatic    = true
 SWEP.Secondary.Ammo         = "none"
-SWEP.Secondary.Delay        = 1.4
+SWEP.Secondary.Delay        = 1
 
 SWEP.Kind                   = WEAPON_MELEE
 SWEP.WeaponID               = AMMO_KNIFE
