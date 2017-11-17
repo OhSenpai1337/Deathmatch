@@ -12,9 +12,12 @@ function StaminaResetVariables(ply)
 	net.Send(ply)
 end
 
-function GM:PlayerAuthed( ply, steamid, uniqueid )
-	
+function GM:PlayerConnect( name )
+	LANG.Msg("ply_connected",{name = name})
+end
 
+function GM:PlayerDisconnected( ply )
+	LANG.Msg("ply_disconnected",{name = ply:Name(), sid = ply:SteamID()})
 end
 
 function GM:PlayerInitialSpawn( ply )

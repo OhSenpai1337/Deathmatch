@@ -115,6 +115,10 @@ l.press_any_button    = "Press any key to restart"
 l.energy              = "Energy"
 l.top                 = "TOP"
 
+--Chat
+l.ply_connected       = "Player {name} connected to server."
+l.ply_disconnected    = "Player {name} ({sid}) disconnected from server."
+
 --Guns
 l.drop_no_room        = "You have no room here to drop your weapon!"
 
