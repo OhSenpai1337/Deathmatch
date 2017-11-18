@@ -43,6 +43,7 @@ include("cl_stamina.lua")
 include("cl_weaponshop.lua")
 include("cl_weaponshop_ext.lua")
 include("cl_scoreboard.lua")
+include("cl_music.lua")
 
 local GetTranslation = LANG.GetTranslation
 local GetPTranslation = LANG.GetParamTranslation
@@ -162,7 +163,6 @@ end
 
 -- server tells us to call this when our LocalPlayer has spawned
 local function PlayerSpawn()
-   local as_spec = net.ReadBit() == 1
 end
 net.Receive("DM_PlayerSpawned", PlayerSpawn)
 
@@ -174,14 +174,12 @@ net.Receive("DM_PlayerDied", PlayerDeath)
 function GM:ShouldDrawLocalPlayer(ply) return false end
 
 function GM:Tick()
-   local client = LocalPlayer()
-   if IsValid(client) then
-      if client:Alive() and client:Team() != TEAM_SPEC then
-         --WSWITCH:Think()
-      end
-   end
+	local client = LocalPlayer()
+	if IsValid(client) then
+		if client:Alive() and client:Team() != TEAM_SPEC then
+		end
+	end
 end
-
 
 -- Simple client-based idle checking
 local idle = {ang = nil, pos = nil, mx = 0, my = 0, t = 0}

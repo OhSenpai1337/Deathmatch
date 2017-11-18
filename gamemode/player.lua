@@ -68,6 +68,13 @@ function GM:PlayerSpawn(ply)
 	ply.has_spawned = true
 	ply:SetupHands()
 	StaminaResetVariables(ply)
+	if GetGameState() == GAME_WAIT then
+		timer.Simple(2,function()
+			net.Start("DM_Music")
+				net.WriteString(WaitMusic())
+			net.Send(ply)
+		end)
+	end
 	if GetGameState() == GAME_ACTIVE then
 		GiveWeapons(ply)
 	end

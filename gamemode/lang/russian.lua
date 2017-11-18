@@ -95,6 +95,12 @@ l.set_title_lang      = "Настройки локализации"
 
 l.set_lang            = "Выберите язык:"
 
+l.set_music_lang      = "Настройки музыки"
+l.set_music_volume    = "Громкость музыки"
+l.set_music_volume_tip = "Вы можете выбрать громкость музыки"
+l.set_music_switch    = "Музыка включена"
+l.set_music_switch_tip = "Включение музыки"
+
 --Round status
 l.game_wait          = "Ожидание"
 l.game_active        = "В процессе"

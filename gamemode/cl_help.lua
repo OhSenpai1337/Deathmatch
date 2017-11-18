@@ -95,6 +95,22 @@ function HELPSCRN:Show()
 
 	dsettings:AddItem(dplay)
 
+	--- Gameplay area
+
+	local dmusic = vgui.Create("DForm", dsettings)
+	dmusic:SetName(GetTranslation("set_music_lang"))
+
+	cb = dmusic:CheckBox(GetTranslation("set_music_switch"), "dm_music_enable")
+	cb:SetTooltip(GetTranslation("set_music_switch_tip"))
+
+	cb = dmusic:NumSlider(GetTranslation("set_music_volume"), "dm_music_volume", 0, 100, 0)
+	if cb.Label then
+		cb.Label:SetWrap(true)
+	end
+	cb:SetTooltip(GetTranslation("set_music_volume_tip"))
+
+	dsettings:AddItem(dmusic)
+
 	--- Language area
 	local dlanguage = vgui.Create("DForm", dsettings)
 	dlanguage:SetName(GetTranslation("set_title_lang"))

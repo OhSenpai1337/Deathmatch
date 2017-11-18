@@ -9,6 +9,7 @@ AddCSLuaFile("cl_help.lua")
 AddCSLuaFile("cl_weaponshop.lua")
 AddCSLuaFile("cl_scoreboard.lua")
 AddCSLuaFile("cl_stamina.lua")
+AddCSLuaFile("cl_music.lua")
 AddCSLuaFile("util.lua")
 AddCSLuaFile("lang_shd.lua")
 AddCSLuaFile("weaponry_shd.lua")
@@ -67,6 +68,9 @@ util.AddNetworkString("DM_LangMsg")
 util.AddNetworkString("DM_ServerLang")
 util.AddNetworkString("DM_StaminaSpawn")
 util.AddNetworkString("DM_MVP")
+util.AddNetworkString("DM_Music")
+util.AddNetworkString("DM_MusicStop")
+util.AddNetworkString("DM_RandomMusic")
 --Weapon shop
 util.AddNetworkString("WS_Points")
 util.AddNetworkString("WS_Items")
@@ -201,6 +205,11 @@ end
 -- Start waiting for players
 function WaitForPlayers()
 	SetGameState(GAME_WAIT)
+	net.Start("DM_MusicStop")
+	net.Broadcast()
+	net.Start("DM_Music")
+		net.WriteString(WaitMusic())
+	net.Broadcast()
 	for k, v in pairs(player.GetAll()) do
 		v:SetFrags(0)
 		v:SetDeaths(0)
@@ -440,16 +449,19 @@ function BeginGame(bool)
 	-- Start the win condition check timer
 	StartWinChecks()
 	sql.Query("DELETE FROM dm_data_kills")
-		for k, v in pairs(player.GetAll()) do
+	for k, v in pairs(player.GetAll()) do
 		v:SetFrags(0)
 		v:SetDeaths(0)
 	end
 	GAMEMODE.GameStartTime = CurTime()
 	GAMEMODE.playermodel = GAMEMODE.force_plymodel == "" and GetRandomPlayerModel() or GAMEMODE.force_plymodel
-
 	SetGameState(GAME_ACTIVE)
 	LANG.Msg("game_started")
 	ServerLog("Game proper has begun...\n")
+	net.Start("DM_MusicStop")
+	net.Broadcast()
+	net.Start("DM_RandomMusic")
+	net.Broadcast()
 
 	--GAMEMODE:UpdatePlayerLoadouts() -- needs to happen when round_active
 
@@ -481,6 +493,12 @@ function EndGame(type,name,num)
 
 	-- Stop checking for wins
 	StopWinChecks()
+
+	net.Start("DM_MusicStop")
+	net.Broadcast()
+	net.Start("DM_Music")
+		net.WriteString(EndMusic())
+	net.Broadcast()
 
 	-- Votemap Start
 	

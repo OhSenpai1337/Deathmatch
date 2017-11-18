@@ -115,7 +115,8 @@ local defaults = {
 CHudBattery = true,
 CHudHealth = true,
 CHudAmmo = true,
-CHudSecondaryAmmo = true
+CHudSecondaryAmmo = true,
+CHudDamageIndicator = true
 }
 
 hook.Add("HUDShouldDraw", "DisableDefaults", function(name)

@@ -27,14 +27,14 @@ net.Receive("RAM_MapVoteUpdate", function(len, ply)
     end
 end)
 
-if file.Exists( "mapvote/recentmaps.txt", "DATA" ) then
-    recentmaps = util.JSONToTable(file.Read("mapvote/recentmaps.txt", "DATA"))
+if file.Exists( "dm_data/recentmaps.txt", "DATA" ) then
+    recentmaps = util.JSONToTable(file.Read("dm_data/recentmaps.txt", "DATA"))
 else
     recentmaps = {}
 end
 
-if file.Exists( "mapvote/config.txt", "DATA" ) then
-    MapVote.Config = util.JSONToTable(file.Read("mapvote/config.txt", "DATA"))
+if file.Exists( "dm_data/vote_config.txt", "DATA" ) then
+    MapVote.Config = util.JSONToTable(file.Read("dm_data/vote_config.txt", "DATA"))
 else
     MapVote.Config = {}
 end
@@ -52,7 +52,7 @@ function CoolDownDoStuff()
         table.insert(recentmaps, 1, curmap)
     end
 
-    file.Write("mapvote/recentmaps.txt", util.TableToJSON(recentmaps))
+    file.Write("dm_data/recentmaps.txt", util.TableToJSON(recentmaps))
 end
 
 function MapVote.Start(length, current, limit, prefix)
@@ -167,8 +167,8 @@ function MapVote.Start(length, current, limit, prefix)
 end
 
 hook.Add( "Shutdown", "RemoveRecentMaps", function()
-        if file.Exists( "mapvote/recentmaps.txt", "DATA" ) then
-            file.Delete( "mapvote/recentmaps.txt" )
+        if file.Exists( "dm_data/recentmaps.txt", "DATA" ) then
+            file.Delete( "dm_data/recentmaps.txt" )
         end
 end )
 

@@ -95,6 +95,12 @@ l.set_title_lang      = "Language settings"
 
 l.set_lang            = "Select language:"
 
+l.set_music_lang      = "Music settings"
+l.set_music_volume    = "Music volume"
+l.set_music_volume_tip = "You can choose the volume of music"
+l.set_music_switch    = "Music switch"
+l.set_music_switch_tip = "Enable music"
+
 --Round status
 l.game_wait          = "Waiting"
 l.game_active        = "In progress"

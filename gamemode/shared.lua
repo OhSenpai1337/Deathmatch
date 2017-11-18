@@ -53,6 +53,10 @@ function GM:CreateTeams()
    team.SetSpawnPoint(TEAM_SPEC, "info_player_deathmatch")
 end
 
+local map_music_blacklist = {
+	"dm_blockparty"
+};
+
 -- Everyone's model
 local dm_playermodels = {
    Model("models/player/phoenix.mdl"),
@@ -80,6 +84,36 @@ end
 
 function WS:ValidateItems(items)
 	if type(items) ~= 'table' then return {} end
-	
 	return items
+end
+
+function WaitMusic()
+	return "https://unnamedproject.ru/dm/01%20-%20HorseSteppin.mp3"
+end
+
+function EndMusic()
+	return "https://unnamedproject.ru/dm/22%20-%20ItsSafeNow.mp3"
+end
+
+local dm_music = {
+	"https://unnamedproject.ru/dm/03%20-%20Paris2.mp3",
+	"https://unnamedproject.ru/dm/04%20-%20Crystals.mp3",
+	"https://unnamedproject.ru/dm/09%20-%20Knock.mp3",
+	"https://unnamedproject.ru/dm/10%20-%20Musikk2.mp3",
+	"https://unnamedproject.ru/dm/11%20-%20Perturbator.mp3",
+	"https://unnamedproject.ru/dm/12%20-%20Release.mp3",
+	"https://unnamedproject.ru/dm/21%20-%20InnerAnimal.mp3",
+	"https://unnamedproject.ru/dm/02%20Dust%20%28Carpenter%20Brut%20Remix%29.mp3",
+	"https://unnamedproject.ru/dm/11%20Divide.mp3",
+	"https://unnamedproject.ru/dm/15%20Decade%20Dance.mp3",
+	"https://unnamedproject.ru/dm/17%20New%20Wave%20Hookers.mp3",
+	"https://unnamedproject.ru/dm/19%20In%20The%20Face%20Of%20Evil.mp3",
+	"https://unnamedproject.ru/dm/21%20Remorse.mp3",
+	"https://unnamedproject.ru/dm/33%20Hotline%20Theme.mp3",
+	"https://unnamedproject.ru/dm/34%20Quixotic.mp3",
+	"https://unnamedproject.ru/dm/35%20The%20Way%20Home.mp3"
+};
+
+function GetRandomMusic()
+   return table.Random(dm_music)
 end
