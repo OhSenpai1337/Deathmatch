@@ -2,7 +2,7 @@ CreateConVar("dm_music_enable", "1", FCVAR_ARCHIVE)
 CreateConVar("dm_music_volume", "5", FCVAR_ARCHIVE)
 function MusicChecker()
 	local ply = LocalPlayer()
-	timer.Create("MusicChecker",1,0,function()
+	timer.Create("MusicChecker",3,0,function()
 		if IsValid( ply.channel ) and ply.channel:GetState() == 0 then
 			RandomMusic(ply)
 			timer.Destroy("MusicChecker")
