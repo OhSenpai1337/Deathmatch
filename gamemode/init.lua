@@ -460,8 +460,10 @@ function BeginGame(bool)
 	ServerLog("Game proper has begun...\n")
 	net.Start("DM_MusicStop")
 	net.Broadcast()
-	net.Start("DM_RandomMusic")
-	net.Broadcast()
+	timer.Simple(2, function()
+		net.Start("DM_RandomMusic")
+		net.Broadcast()
+	end)
 
 	--GAMEMODE:UpdatePlayerLoadouts() -- needs to happen when round_active
 

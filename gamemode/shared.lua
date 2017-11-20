@@ -53,7 +53,7 @@ function GM:CreateTeams()
    team.SetSpawnPoint(TEAM_SPEC, "info_player_deathmatch")
 end
 
-local map_music_blacklist = {
+map_music_blacklist = {
 	"dm_blockparty"
 };
 

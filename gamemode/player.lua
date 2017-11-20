@@ -12,10 +12,6 @@ function StaminaResetVariables(ply)
 	net.Send(ply)
 end
 
-function GM:PlayerConnect( name )
-	LANG.Msg("ply_connected",{name = name})
-end
-
 function GM:PlayerDisconnected( ply )
 	LANG.Msg("ply_disconnected",{name = ply:Name(), sid = ply:SteamID()})
 end
@@ -82,6 +78,16 @@ function GM:PlayerSpawn(ply)
 	util.PrecacheModel(mdl)
 	ply:SetModel(mdl)
 	--hook.Call("PlayerSetModel", GAMEMODE, ply)
+end
+
+function GM:PlayerAuthed( ply, steamid, uniqueid )
+	LANG.Msg("ply_connected",{name = ply:Name()})
+	if GetGameState() == GAME_ACTIVE then
+		timer.Simple(2,function()
+			net.Start("DM_RandomMusic")
+			net.Send(ply)
+		end)
+	end
 end
 
 function GM:PlayerSetHandsModel( pl, ent )
@@ -258,7 +264,7 @@ function GM:DoPlayerDeath(ply, attacker, dmginfo)
 		ply:AddDeaths(1)
 		--Drop current weapon
 		local wep = ply:GetActiveWeapon()
-		if !wep.InDefault then WEPS.DropNotifiedWeapon(ply, wep, true) end
+		if WEPS.GetClass(wep) == "weapon_dm_grenade" or not wep.InDefault then WEPS.DropNotifiedWeapon(ply, wep, true) end
 		if ( attacker:IsValid() && attacker:IsPlayer() ) then
 			if ( attacker == ply ) then
 				attacker:AddFrags( 0 )
